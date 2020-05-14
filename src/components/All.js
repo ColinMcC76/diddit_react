@@ -20,6 +20,7 @@ function HomePage(props) {
         axios
             .get('http://127.0.0.1:8000/api/')
             .then(res => {
+                // console.log(res)
                 setPosts(res.data)
                 
             })
@@ -29,7 +30,7 @@ function HomePage(props) {
 
     return(
 
-            <div>
+            <div className='col-8'>
                 { posts ? posts.map((post, i) => <Post changeCurrentPageHandle={props.changeCurrentPageHandle} key={i} sub={post.Subdiddit} post={post} user={post.User} />) : '' }
             </div>
         )

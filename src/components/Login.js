@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import {
     Button,
     Input
@@ -12,8 +13,23 @@ const Login = (props) => {
     const handlePassword = (password) => setPassword(password.target.value);
 
     const login = (e) => {
-        console.log('login function')
+        // console.log('login function')
         e.preventDefault();
+        const LoginInfo  = {
+            email: email,
+            password: password
+        }
+        axios.post('http://localhost:8000/api/login', LoginInfo)
+            .then(function(response){
+                props.loginUser(response.data)
+                // console.log(response.data);
+            })
+            .catch(function(error) {
+                console.log(error)
+            })
+            .finally(function() {
+            })
+            props.changeCurrentPageHandle('Home')
         // axios call goes here
     }
 
