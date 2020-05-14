@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import {
     Collapse,
     Navbar,
@@ -12,7 +12,9 @@ import {
     DropdownToggle,
     DropdownMenu,
     DropdownItem,
+    Button
 } from 'reactstrap';
+import User from './User';
 
 
 const Example = (props) => {
@@ -20,6 +22,7 @@ const Example = (props) => {
     const [isOpen, setIsOpen] = useState(false);
     
     const toggle = () => setIsOpen(!isOpen);
+
     
     return (
         <div className='col-12 p-0'>
@@ -56,9 +59,11 @@ const Example = (props) => {
             </UncontrolledDropdown> */}
             </Nav>
             <Nav navbar>
-                <div className=''>
-                    {props.links.map(item=> <a onClick={()=> props.changeCurrentPageHandle(item)} className='px-2' href='#'>{item}</a>)}
-                </div>
+                {props.authUser ? props.authLinks.map(item=> <a onClick={()=> props.changeCurrentPageHandle(item)}   className='px-2' href='#'>{item}</a>): 
+                    <div className=''>
+                        {props.links.map(item=> <a onClick={()=> props.changeCurrentPageHandle(item)}   className='px-2' href='#'>{item}</a>)}
+                    </div>
+                }
                 {/* <NavLink >login</NavLink>
         <NavLink href="#register">register</NavLink> */}
 

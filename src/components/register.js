@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import {
     Button,
     Input
@@ -8,11 +9,36 @@ const Register = (props) => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmed, setConfirmed] = useState('');
 
     const handleUsername = (username) => setUsername(username.target.value);
     const handleEmail = (email) => setEmail(email.target.value);
     const handlePassword = (password) => setPassword(password.target.value);
+    const handleConfirmed = (confirmed) => setConfirmed(confirmed.target.value);
 
+    const register = (e) => {
+        // console.log('register function')
+        e.preventDefault();
+        const registerInfo  = {
+            name: username,
+            email: email,
+            password: password,
+            password_confirmation: confirmed
+        }
+        axios.post('http://localhost:8000/api/signup', registerInfo)
+            .then(function(response){
+                // console.log(response.data);
+                props.loginUser(response.data);
+                // props.registerUser(response.data)
+            })
+            .catch(function(error) {
+                console.log(error)
+            })
+            .finally(function() {
+            })
+        props.changeCurrentPageHandle('Home')
+        // axios call goes here
+    }
 
 
 
@@ -26,7 +52,7 @@ const Register = (props) => {
                     <p class="lead">
                         It's free.
                         </p>
-                    <form class="mb-3">
+                    <form onSubmit={register} class="mb-3">
                         <div class="form-group ">
                             <label for="firstName">username:</label>
                             <Input onChange={handleUsername} name='username' type="text" class="form-control" placeholder="username" id="username"/>
@@ -42,9 +68,12 @@ const Register = (props) => {
                             <Input onChange={handlePassword} name='password' type="text" class="form-control" placeholder="password" id="password"/>
 
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block mb-3">
-                            Create account
-                            </button>
+                        <div class="form-group">
+                            <label for="confirmedPassword">confirmed Password:</label>
+                            <Input onChange={handleConfirmed} name='confirmed' type="text" class="form-control" placeholder="confirmedPassword" id="confirmedPassword"/>
+
+                        </div>
+                        <Button type='submit'>Create Account</Button>
                         {/* <div class="alert alert-info small" role="alert">
                                 By clicking above you agree to our
                                 <a href="#" class="alert-link">Terms &amp; Conditions</a> and
