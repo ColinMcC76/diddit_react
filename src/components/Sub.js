@@ -1,6 +1,9 @@
 import React, {useState,useEffect } from 'react'
 import axios from 'axios'
 import Post from './post'
+import {
+    Button
+} from 'reactstrap';
 
 
 function Sub(props) {
@@ -15,16 +18,24 @@ function Sub(props) {
             
         })
         .catch(err => console.error(err))
-    }, [])
+    }, [props])
     return(
-        <div>
-                <div className="col-4 border my-3">
+        <div className='px-5'>
+                <div className="my-3">
                     {/* <img class="card-img-top" src="https://fakeimg.pl/350x200/?text=User" alt="user prorfile"> */}
-                        <h4>D/{sub.name}</h4>
+                        {Object.keys(props.authUser).length > 0 ? <Button onClick={() => props.changeCurrentPageHandle('createPost', props.sub_id)} className='my-3' size='lg'>Create a post</Button> : ''}
                 </div>
-                <div className='col-8 my-3'>
-                        {posts.length > 0 ? posts.map((post, i) => <Post changeCurrentPageHandle={props.changeCurrentPageHandle} key={i} sub={sub} post={post} user={post.User}/> ) 
-                        : <p>No posts here, looks empty.</p>}
+                <div className='row flex-row'>
+                    <div className='col-sm-12 col-md-4 my-3'>
+                        <p>
+                            <h4>D/{sub.name}</h4>
+                            {sub.description}
+                        </p>
+                    </div>
+                    <div className='col-sm-12 col-md-8 my-3'>
+                            {posts.length > 0 ? posts.sort((a,b)=>  b.id - a.id ).map((post, i) => <Post changeCurrentPageHandle={props.changeCurrentPageHandle} key={i} sub={sub} post={post} user={post.User}/> ) 
+                            : <p>No posts here, looks empty.</p>}
+                    </div>
                 </div>
         </div>
     )

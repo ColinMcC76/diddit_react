@@ -8,12 +8,12 @@ import {
 const Login = (props) => {
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
+    const [error,setError] = useState('');
 
     const handleEmail = (email) => setEmail(email.target.value);
     const handlePassword = (password) => setPassword(password.target.value);
 
     const login = (e) => {
-        // console.log('login function')
         e.preventDefault();
         const LoginInfo  = {
             email: email,
@@ -22,15 +22,14 @@ const Login = (props) => {
         axios.post('http://localhost:8000/api/login', LoginInfo)
             .then(function(response){
                 props.loginUser(response.data)
-                // console.log(response.data);
+                props.changeCurrentPageHandle('Home')
             })
             .catch(function(error) {
+                setError(error)
                 console.log(error)
             })
             .finally(function() {
             })
-            props.changeCurrentPageHandle('Home')
-        // axios call goes here
     }
 
 
@@ -48,11 +47,14 @@ const Login = (props) => {
                                 <label for="password">Password:</label>
                                 <Input onChange={handlePassword} value={password} name='password' type="password" class="form-control" id="password" required />
                             </div>
+                            {error ? <div class="alert alert-danger" role="alert">Unauthorized User, please try again.</div> : ''}
+                            <br/>
+                            <br/>
                             <Button type='submit'>Login</Button>
                         </form>
                         <div class="text-center">
                             <p>or..</p>
-                            <p class="small"><a href="#">Have you forgotten your account details?</a></p>
+                            <p class="small"><a className='text-info' href="#">Have you forgotten your account details?</a></p>
                         </div>
                     </div>
                 </div>

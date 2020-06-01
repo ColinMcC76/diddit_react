@@ -10,6 +10,8 @@ const Register = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmed, setConfirmed] = useState('');
+    const [error,setError] = useState('');
+
 
     const handleUsername = (username) => setUsername(username.target.value);
     const handleEmail = (email) => setEmail(email.target.value);
@@ -17,7 +19,6 @@ const Register = (props) => {
     const handleConfirmed = (confirmed) => setConfirmed(confirmed.target.value);
 
     const register = (e) => {
-        // console.log('register function')
         e.preventDefault();
         const registerInfo  = {
             name: username,
@@ -27,17 +28,15 @@ const Register = (props) => {
         }
         axios.post('http://localhost:8000/api/signup', registerInfo)
             .then(function(response){
-                // console.log(response.data);
                 props.loginUser(response.data);
-                // props.registerUser(response.data)
+                props.changeCurrentPageHandle('Home')
             })
             .catch(function(error) {
                 console.log(error)
+                setError(error)
             })
             .finally(function() {
             })
-        props.changeCurrentPageHandle('Home')
-        // axios call goes here
     }
 
 
@@ -56,7 +55,6 @@ const Register = (props) => {
                         <div class="form-group ">
                             <label for="firstName">username:</label>
                             <Input onChange={handleUsername} name='username' type="text" class="form-control" placeholder="username" id="username"/>
-                            {/* <input type="text" class="form-control" placeholder="username" id="firstName"/> */}
                         </div>
                         <div class="form-group">
                             <label for="email">Email:</label>
@@ -65,23 +63,17 @@ const Register = (props) => {
                         </div>
                         <div class="form-group">
                             <label for="password">Password:</label>
-                            <Input onChange={handlePassword} name='password' type="text" class="form-control" placeholder="password" id="password"/>
+                            <Input onChange={handlePassword} name='password' type="password" class="form-control" placeholder="password" id="password"/>
 
                         </div>
                         <div class="form-group">
                             <label for="confirmedPassword">confirmed Password:</label>
-                            <Input onChange={handleConfirmed} name='confirmed' type="text" class="form-control" placeholder="confirmedPassword" id="confirmedPassword"/>
+                            <Input onChange={handleConfirmed} name='confirmed' type="password" class="form-control" placeholder="confirmedPassword" id="confirmedPassword"/>
 
                         </div>
+                        {error ? <div class="alert alert-danger" role="alert">Unauthorized User, please try again.</div> : ''}
                         <Button type='submit'>Create Account</Button>
-                        {/* <div class="alert alert-info small" role="alert">
-                                By clicking above you agree to our
-                                <a href="#" class="alert-link">Terms &amp; Conditions</a> and
-                                our <a href="#" class="alert-link">Privacy Policy</a>.
-                            </div> */}
                         <div class="text-center">
-                            <p>or ...</p>
-                            <a href="#" class="btn btn-success">Login</a>
                         </div>
                     </form>
                 </div>
