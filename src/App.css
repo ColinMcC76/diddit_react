@@ -27,6 +27,14 @@
 .App-link {
   color: #61dafb;
 }
+.click{
+  cursor: pointer;
+}
+
+.image{
+  max-height: 400px;
+  max-width: 400px;
+}
 
 @keyframes App-logo-spin {
   from {
@@ -35,4 +43,8 @@
   to {
     transform: rotate(360deg);
   }
+}
+.background {
+  background-color: gray;
+
 }
